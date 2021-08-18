@@ -1,23 +1,37 @@
-import "./App.css";
+import React, { useState, useRef, useEffect } from 'react';
+import { connect } from 'react-redux';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import { decryptMessage } from './utils/cipher';
+import { fetchUsers } from './redux';
+
+import Login from './pages/Login/Login';
+import Panel from './pages/Panel/Panel';
+
+const App = ({userState, fetchUsers}) => {
+  const [logged, setLogged] = useState(undefined);
+  const loginRef = useRef(null);
+  loginRef.current = fetchUsers;
+
+  useEffect(() => {
+    loginRef.current();
+
+    if(localStorage.getItem("LOGIN_USER_KEY")) {
+      let stKey = localStorage.getItem("LOGIN_USER_KEY");
+      let decryptedKey = decryptMessage(stKey);
+      if(decryptedKey.includes("chromaticabberations_")) setLogged(true);
+      else setLogged(false);
+    } else setLogged(false);
+
+  },[loginRef]);
+
+  useEffect(() => {
+
+  }, []);
+
+  return logged === undefined || userState.loading ? <div>Loading</div> : !logged ? <Login users={userState.users} setLogged={setLogged} /> : <Panel />
 }
 
-export default App;
+const mapStateToProps = (state) => ({ userState: state.userState });
+const mapDispatchToProps = (dispatch) => ({fetchUsers: () => dispatch(fetchUsers())});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
