@@ -1,0 +1,31 @@
+.btn {
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 17px;
+    border: 1px solid black;
+    background: black;
+    color: white;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: 0.25s all ease-in-out;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+
+.SM {
+    font-size: 14px;
+}
+
+.LG {
+    font-size: 20px;
+}
+
+.LIGHT {
+    background: white;
+    color: black;
+}

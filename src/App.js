@@ -28,7 +28,7 @@ const App = ({userState, fetchUsers}) => {
 
   }, []);
 
-  return logged === undefined || userState.loading ? <div>Loading</div> : !logged ? <Login users={userState.users} setLogged={setLogged} /> : <Panel />
+  return logged === undefined || userState.loading ? <div>Loading</div> : !logged ? <Login users={userState.users} setLogged={setLogged} /> : <Panel setLogged={setLogged} />
 }
 
 const mapStateToProps = (state) => ({ userState: state.userState });
