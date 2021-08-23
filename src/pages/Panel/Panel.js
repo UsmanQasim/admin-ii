@@ -6,6 +6,7 @@ import { fetchInquiries, fetchContactInquiries } from "../../redux";
 //importing components
 import Navbar from "./components/navbar/Navbar";
 import Dashboard from "./components/dashboard/Dashboard";
+import Loader from "./components/loader/Loader";
 
 const Panel = ({
   fetchInquiries,
@@ -16,38 +17,44 @@ const Panel = ({
 }) => {
   const [inquiries, setInquiries] = useState([]);
 
-  const refactorInquiries = () => {
-    inquiryState.inquiries.map((inq) => setInquiries([...inquiries, inq]));
-    contactInquiryState.contactInquiries.map((inq) =>
-      setInquiries([...inquiries, inq])
-    );
-
-    //sort inquiries
-  };
-
   const inquiryRef = useRef(null);
   const cInquiryRef = useRef(null);
-  const rInquiryRef = useRef(null);
+  const aInquiryRef = useRef(null);
 
   inquiryRef.current = fetchInquiries;
   cInquiryRef.current = fetchContactInquiries;
-  rInquiryRef.current = refactorInquiries;
+  aInquiryRef.current = {
+    assignInquiries: () =>
+      setInquiries([...inquiries, ...inquiryState.inquiries]),
+    assignContactInquiries: () =>
+      setInquiries([...inquiries, ...contactInquiryState.contactInquiries]),
+  };
 
   useEffect(() => {
     inquiryRef.current();
     cInquiryRef.current();
   }, []);
 
-  useEffect(() => {
-    if (inquiryState.loading && contactInquiryState.loading)
-      rInquiryRef.current();
-  }, [inquiryState.loading, contactInquiryState.loading]);
+  useEffect(
+    () => !inquiryState.loading && aInquiryRef.current.assignInquiries(),
+    [inquiryState.loading]
+  );
+  useEffect(
+    () =>
+      !contactInquiryState.loading &&
+      aInquiryRef.current.assignContactInquiries(),
+    [contactInquiryState.loading]
+  );
 
   return (
-    <div>
+    <>
       <Navbar setLogged={setLogged} />
-      <Dashboard inquiries={inquiries} />
-    </div>
+      {!inquiries ? (
+        <Loader>Fetching Inquiries</Loader>
+      ) : (
+        <Dashboard inquiries={inquiries} />
+      )}
+    </>
   );
 };
 
