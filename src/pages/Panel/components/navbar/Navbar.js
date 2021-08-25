@@ -8,8 +8,8 @@ import { Button, buttonTypes } from "../button/Button";
 
 const Navbar = ({ setLogged }) => {
   const logout = () => {
-    setLogged(false);
     localStorage.removeItem("LOGIN_USER_KEY");
+    window.location.reload();
   };
 
   return (

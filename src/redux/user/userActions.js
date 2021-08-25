@@ -4,12 +4,13 @@ import {
   FETCH_USERS_SUCCESS,
   FETCH_USERS_FAILURE,
 } from "./userTypes";
+import { API_KEY } from '../../utils/secrets';
 
 export const fetchUsers = () => {
   return (dispatch) => {
     dispatch(fetchUsersRequest());
 
-    const reqURL = "http://backend.lastminuteweddings.uk/?users";
+    const reqURL = "/users/?users&api_key=" + API_KEY;
 
     Axios.get(reqURL)
       .then((response) => dispatch(fetchUsersSuccess(response.data)))

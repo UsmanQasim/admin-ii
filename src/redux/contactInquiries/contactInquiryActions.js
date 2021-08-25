@@ -4,12 +4,13 @@ import {
   FETCH_CONTACT_INQUIRIES_SUCCESS,
   FETCH_CONTACT_INQUIRIES_FAILURE,
 } from "./contactInquiryTypes";
+import { API_KEY } from "../../utils/secrets";
 
 export const fetchContactInquiries = () => {
   return (dispatch) => {
     dispatch(fetchContactInquiriesRequest());
 
-    const reqURL = "http://backend.lastminuteweddings.uk/?contact_inquiries";
+    const reqURL = "/contactInquiries/?contact_inquiries&api_key=" + API_KEY;
 
     Axios.get(reqURL)
       .then((response) => dispatch(fetchContactInquiriesSuccess(response.data)))

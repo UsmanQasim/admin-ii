@@ -29,7 +29,7 @@ const Login = ({ users, setLogged }) => {
       );
       localStorage.setItem("LOGIN_USER_KEY", LOGIN_USER_KEY);
       alert("You've transcended");
-      setLogged(true);
+      window.location.reload();
     } else {
       setError("Invalid Credentials");
       setPassword("");
