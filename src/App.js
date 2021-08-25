@@ -24,8 +24,6 @@ const App = ({ userState, fetchUsers }) => {
     } else setLogged(false);
   }, [loginRef]);
 
-  useEffect(() => {}, []);
-
   return (
     <div className="parent">
       {logged === undefined || userState.loading ? (
