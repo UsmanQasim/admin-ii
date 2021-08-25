@@ -1,0 +1,46 @@
+@import "../../../../colors.scss";
+.container {
+  font-family: "Noto Sans", sans-serif;
+  width: 100vw;
+  overflow-x: auto;
+  table {
+    width: 100%;
+    min-width: 1000px;
+    thead {
+      background-color: $dark;
+      tr {
+        height: 50px;
+        th {
+          border: 1px solid white;
+          color: white;
+          text-align: center;
+        }
+      }
+    }
+    tbody {
+      background-color: $light-accent;
+      tr {
+        padding: 5px 0px;
+        td {
+          border: 1px solid rgb(97, 93, 93);
+          button {
+            background-color: purple;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+          }
+          button:hover {
+            background-color: white;
+            color: purple;
+          }
+          label {
+            color: $dark-accent;
+            padding: 10px 10px;
+            font-weight: 700;
+          }
+        }
+      }
+    }
+  }
+}
