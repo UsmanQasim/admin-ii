@@ -102,21 +102,6 @@ const Dashboard = ({ inquiries }) => {
           ))}
         </tbody>
       </table>
-
-      {/* {inquiry.firstName}
-          {inquiry.date}
-          {inquiry.lastName}
-          {inquiry.gender}
-          {inquiry.packages}
-          {inquiry.pcode}
-          {inquiry.date}
-          {inquiry.venue_to_be}
-          {inquiry.total_guests}
-          {inquiry.event_type}
-          {inquiry.email}
-          {inquiry.phone_no}
-          {inquiry.comment}
-          {inquiry.how_you_know} */}
     </div>
   );
 };
