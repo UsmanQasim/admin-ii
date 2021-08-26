@@ -4,8 +4,27 @@ import { CgNotes } from "react-icons/cg";
 import { Modal } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 
+import { API_KEY } from '../../../../utils/secrets';
+
 const Dashboard = ({ inquiries }) => {
   const [modalShow, setModalShow] = useState(false);
+  const [note, setNote] = useState("");
+  const [selectedInquiry, setSelectedInquiry] = useState(null);
+
+  const clickHandler = (e) => {
+    e.preventDefault();
+
+    const reqURL = "/api/v1/notes/update.php?api_key=" + API_KEY;
+    const xhttp = new XMLHttpRequest();
+    xhttp.onload = function () {
+      alert(this.responseText);
+      window.location.reload();
+    };
+    const reqData = `id=${selectedInquiry.id}&type=${selectedInquiry.pcode ? 'INQ' : 'CINQ'}&note=${note}`;
+    xhttp.open("POST", reqURL);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send(reqData);
+  };
 
   return (
     <div className={styles.container}>
@@ -22,6 +41,9 @@ const Dashboard = ({ inquiries }) => {
         <MyVerticallyCenteredModal
           show={modalShow}
           onHide={() => setModalShow(false)}
+          note={note}
+          setNote={setNote}
+          clickHandler={clickHandler}
         />
         <tbody>
           {inquiries.map((inquiry, key) => (
@@ -29,7 +51,11 @@ const Dashboard = ({ inquiries }) => {
               {/* Action */}
               <td>
                 <div style={{ textAlign: "center" }}>
-                  <button onClick={() => setModalShow(true)}>
+                  <button onClick={() => {
+                    setModalShow(true);
+                    setSelectedInquiry(inquiry);
+                    setNote(inquiry.note);
+                  }}>
                     <CgNotes size="25px" />
                     <label>NOTE</label>
                   </button>
@@ -108,7 +134,7 @@ const Dashboard = ({ inquiries }) => {
   );
 };
 
-function MyVerticallyCenteredModal(props) {
+const MyVerticallyCenteredModal = (props) => {
   return (
     <Modal
       {...props}
@@ -120,14 +146,23 @@ function MyVerticallyCenteredModal(props) {
         <Modal.Title id="contained-modal-title-vcenter">NOTES</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <textarea cols="40" rows="8" style={{ padding: "5px 10px" }} />
+        <textarea
+          cols="40"
+          rows="8"
+          value={props.note}
+          onChange={(e) => props.setNote(e.target.value)}
+          style={{ padding: "5px 10px" }}
+        />
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={props.onHide}>Close</Button>
-        <Button onClick={props.onHide}>Update</Button>
+        <Button onClick={(e) => {
+          props.onHide(e);
+          props.clickHandler(e);
+        }}>Update</Button>
       </Modal.Footer>
     </Modal>
   );
-}
+};
 
 export default Dashboard;
