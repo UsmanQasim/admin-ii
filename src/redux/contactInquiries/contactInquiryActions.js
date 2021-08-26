@@ -10,7 +10,8 @@ export const fetchContactInquiries = () => {
   return (dispatch) => {
     dispatch(fetchContactInquiriesRequest());
 
-    const reqURL = "/contactInquiries/?contact_inquiries&api_key=" + API_KEY;
+    const reqURL =
+      "/api/v1/contactInquiries/?contact_inquiries&api_key=" + API_KEY;
 
     Axios.get(reqURL)
       .then((response) => dispatch(fetchContactInquiriesSuccess(response.data)))
