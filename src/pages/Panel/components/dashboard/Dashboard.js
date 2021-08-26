@@ -13,7 +13,7 @@ const Dashboard = ({ inquiries }) => {
         <thead>
           <tr>
             <th>Action</th>
-            <th>Response</th>
+            <th>Notes</th>
             <th>Customer Information</th>
             <th>Event Details</th>
             <th>Booking Details</th>
@@ -31,17 +31,19 @@ const Dashboard = ({ inquiries }) => {
                 <div style={{ textAlign: "center" }}>
                   <button onClick={() => setModalShow(true)}>
                     <CgNotes size="25px" />
+                    <label>NOTE</label>
                   </button>
                 </div>
               </td>
-              {/* Response */}
+              {/* Notes */}
               <td>
-                <div>
-                  <label>RESPONSE :</label>
-                </div>
-                <div>
-                  <label>Sales Customer :</label>
-                </div>
+                {inquiry.note ? (
+                  <p>{inquiry.note}</p>
+                ) : (
+                  <div>
+                    <p>No Note</p>{" "}
+                  </div>
+                )}
               </td>
               {/* customer details */}
               <td>
