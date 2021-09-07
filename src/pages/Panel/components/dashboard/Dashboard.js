@@ -4,7 +4,7 @@ import { CgNotes } from "react-icons/cg";
 import { Modal } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 
-import { API_KEY } from '../../../../utils/secrets';
+import { API_KEY } from "../../../../utils/secrets";
 
 const Dashboard = ({ inquiries }) => {
   const [modalShow, setModalShow] = useState(false);
@@ -20,7 +20,9 @@ const Dashboard = ({ inquiries }) => {
       alert(this.responseText);
       window.location.reload();
     };
-    const reqData = `id=${selectedInquiry.id}&type=${selectedInquiry.pcode ? 'INQ' : 'CINQ'}&note=${note}`;
+    const reqData = `id=${selectedInquiry.id}&type=${
+      selectedInquiry.pcode ? "INQ" : "CINQ"
+    }&note=${note}`;
     xhttp.open("POST", reqURL);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send(reqData);
@@ -46,93 +48,181 @@ const Dashboard = ({ inquiries }) => {
           clickHandler={clickHandler}
         />
         <tbody>
-          {inquiries.map((inquiry, key) => (
-            <tr key={key}>
-              {/* Action */}
-              <td>
-                <div style={{ textAlign: "center" }}>
-                  <button onClick={() => {
-                    setModalShow(true);
-                    setSelectedInquiry(inquiry);
-                    setNote(inquiry.note);
-                  }}>
-                    <CgNotes size="25px" />
-                    <label>NOTE</label>
-                  </button>
-                </div>
-              </td>
-              {/* Notes */}
-              <td>
-                {inquiry.note ? (
-                  <p>{inquiry.note}</p>
+          {inquiries.map((inquiry, key) => {
+            const type = inquiry.pcode ? "INQ" : "C_INQ";
+            return (
+              <React.Fragment key={key}>
+                {type === "INQ" ? (
+                  <InquiryDetail
+                    inquiry={inquiry}
+                    setModalShow={setModalShow}
+                    setSelectedInquiry={setSelectedInquiry}
+                    setNote={setNote}
+                  />
+                ) : type === "C_INQ" ? (
+                  <ContactInquiryDetail
+                    inquiry={inquiry}
+                    setModalShow={setModalShow}
+                    setSelectedInquiry={setSelectedInquiry}
+                    setNote={setNote}
+                  />
                 ) : (
-                  <div>
-                    <p>No Note</p>{" "}
-                  </div>
+                  ""
                 )}
-              </td>
-              {/* customer details */}
-              <td>
-                <div>
-                  <label>Name :</label>
-                  {inquiry.gender}
-                  {inquiry.firstName}
-                  {inquiry.lastName}
-                </div>
-                <div>
-                  <label>Email :</label>
-                  {inquiry.email}
-                </div>
-                <div>
-                  <label>Postal Code :</label>
-                  {inquiry.pcode}
-                </div>
-                <div>
-                  <label>Phone NO :</label>
-                  {inquiry.phone_no}
-                </div>
-              </td>
-              {/* Event Details */}
-              <td>
-                <div>
-                  <label>Looking For :</label>
-                  {inquiry.packages}
-                </div>
-                <div>
-                  <label>DATE :</label>
-                  {inquiry.date}
-                </div>
-              </td>
-              {/* Booking Details */}
-              <td>
-                <div>
-                  <label>Venue</label>
-                  {inquiry.venue_to_be}
-                </div>
-                <div>
-                  <label>Total Guests :</label>
-                  {inquiry.total_guests}
-                </div>
-                <div>
-                  <label>Event Type :</label>
-                  {inquiry.event_type}
-                </div>
-                <div>
-                  <label>Comment:</label>
-                  {inquiry.comment}
-                </div>
-                <div>
-                  <label>How they Know :</label>
-                  {inquiry.how_you_know}
-                </div>
-              </td>
-            </tr>
-          ))}
+              </React.Fragment>
+            );
+          })}
         </tbody>
       </table>
     </div>
   );
 };
+
+const InquiryDetail = ({
+  inquiry,
+  setModalShow,
+  setSelectedInquiry,
+  setNote,
+}) => (
+  <tr>
+    <td>
+      <div style={{ textAlign: "center" }}>
+        <button
+          onClick={() => {
+            setModalShow(true);
+            setSelectedInquiry(inquiry);
+            setNote(inquiry.note);
+          }}
+        >
+          <CgNotes size="25px" />
+          <label>NOTE</label>
+        </button>
+      </div>
+    </td>
+    <td>
+      <p>{inquiry.note ? inquiry.note : "No Note"}</p>
+    </td>
+    <td>
+      <div>
+        <label>Name :</label>
+        {inquiry.gender}
+        {inquiry.firstName}
+        {inquiry.lastName}
+      </div>
+      <div>
+        <label>Email :</label>
+        {inquiry.email}
+      </div>
+      <div>
+        <label>Postal Code :</label>
+        {inquiry.pcode}
+      </div>
+      <div>
+        <label>Phone NO :</label>
+        {inquiry.phone_no}
+      </div>
+    </td>
+    <td>
+      <div>
+        <label>Looking For :</label>
+        {inquiry.packages}
+      </div>
+      <div>
+        <label>DATE :</label>
+        {inquiry.date}
+      </div>
+    </td>
+    <td>
+      <div>
+        <label>Venue</label>
+        {inquiry.venue_to_be}
+      </div>
+      <div>
+        <label>Total Guests :</label>
+        {inquiry.total_guests}
+      </div>
+      <div>
+        <label>Event Type :</label>
+        {inquiry.event_type}
+      </div>
+      <div>
+        <label>Comment:</label>
+        {inquiry.comment}
+      </div>
+      <div>
+        <label>How they Know :</label>
+        {inquiry.how_you_know}
+      </div>
+    </td>
+  </tr>
+);
+
+const ContactInquiryDetail = ({
+  inquiry,
+  setModalShow,
+  setSelectedInquiry,
+  setNote,
+}) => (
+  <tr>
+    <td>
+      <div style={{ textAlign: "center" }}>
+        <button
+          onClick={() => {
+            setModalShow(true);
+            setSelectedInquiry(inquiry);
+            setNote(inquiry.note);
+          }}
+        >
+          <CgNotes size="25px" />
+          <label>NOTE</label>
+        </button>
+      </div>
+    </td>
+    <td>
+      {inquiry.note ? (
+        <p>{inquiry.note}</p>
+      ) : (
+        <div>
+          <p>No Note</p>{" "}
+        </div>
+      )}
+    </td>
+    <td>
+      <div>
+        <label>Name :</label>
+        {inquiry.firstName ? inquiry.firstName : ""}
+      </div>
+      <div>
+        <label>Email :</label>
+        {inquiry.email ? inquiry.email : ""}
+      </div>
+      <div>
+        <label>Phone NO :</label>
+        {inquiry.contact_no ? inquiry.contact_no : ""}
+      </div>
+    </td>
+    <td>
+      <div>
+        <label>DATE :</label>
+        {inquiry.date ? inquiry.date : ""}
+      </div>
+    </td>
+    <td>
+      <div>
+        <label>Venue</label>
+        {inquiry.venue_optional ? inquiry.venue_optional : ""}
+      </div>
+      <div>
+        <label>Total Guests :</label>
+        {inquiry.total_guests ? inquiry.total_guests : ""}
+      </div>
+      <div>
+        <label>Event Type :</label>
+        {inquiry.type_of_party ? inquiry.type_of_party : ""}
+      </div>
+    </td>
+  </tr>
+);
 
 const MyVerticallyCenteredModal = (props) => {
   return (
@@ -156,10 +246,14 @@ const MyVerticallyCenteredModal = (props) => {
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={props.onHide}>Close</Button>
-        <Button onClick={(e) => {
-          props.onHide(e);
-          props.clickHandler(e);
-        }}>Update</Button>
+        <Button
+          onClick={(e) => {
+            props.onHide(e);
+            props.clickHandler(e);
+          }}
+        >
+          Update
+        </Button>
       </Modal.Footer>
     </Modal>
   );
